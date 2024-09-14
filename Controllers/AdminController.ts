@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { ICreateVendors } from "../Dto";
-
+import { Vendors, IVendorsDatabase } from "../Models";
 export const createVendor = async (
   request: Request,
   response: Response,
@@ -17,9 +17,29 @@ export const createVendor = async (
     password,
   } = <ICreateVendors>request.body;
 
-  console.log("hello all vendor are created here ");
+  const dataPosted: IVendorsDatabase = {
+    name,
+    ownerName,
+    foodType,
+    pinCode,
+    address,
+    phone,
+    email,
+    password,
+    salt: "",
+    serviceAvailability: false,
+    coverImages: [""],
+    rating: 0,
+  };
+  const addVendor = await Vendors.create(dataPosted);
+
+  if (addVendor) {
+    return response.status(200).json({
+      vendor: addVendor,
+    });
+  }
   response.json({
-    message: "all vendor are created here",
+    error: "vendor could not be added",
   });
   next();
 };
