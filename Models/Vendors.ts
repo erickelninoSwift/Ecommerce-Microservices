@@ -16,41 +16,54 @@ export interface IVendorsDatabase {
   //   foods: any;
 }
 
-const vendorsSchema = new mongoose.Schema<IVendorsDatabase>({
-  name: {
-    type: String,
+const vendorsSchema = new mongoose.Schema<IVendorsDatabase>(
+  {
+    name: {
+      type: String,
+    },
+    ownerName: {
+      type: String,
+    },
+    foodType: {
+      type: [String],
+    },
+    pinCode: {
+      type: String,
+    },
+    address: {
+      type: String,
+    },
+    phone: {
+      type: String,
+    },
+    email: {
+      type: String,
+    },
+    password: {
+      type: String,
+    },
+    salt: { type: String },
+    serviceAvailability: { type: Boolean },
+    coverImages: { type: [String] },
+    rating: { type: Number },
+    //   foods: [
+    //     {
+    //       type: mongoose.Types.ObjectId,
+    //       ref: "food",
+    //     },
+    //   ],
   },
-  ownerName: {
-    type: String,
-  },
-  foodType: {
-    type: [String],
-  },
-  pinCode: {
-    type: String,
-  },
-  address: {
-    type: String,
-  },
-  phone: {
-    type: String,
-  },
-  email: {
-    type: String,
-  },
-  password: {
-    type: String,
-  },
-  salt: { type: String },
-  serviceAvailability: { type: Boolean },
-  coverImages: { type: [String] },
-  rating: { type: Number },
-  //   foods: [
-  //     {
-  //       type: mongoose.Types.ObjectId,
-  //       ref: "food",
-  //     },
-  //   ],
-});
+  {
+    toJSON: {
+      transform(doc, ret, options) {
+        delete ret.password,
+          delete ret.salt,
+          delete ret.createdAt,
+          delete ret.updatedAt,
+          delete ret.__v;
+      },
+    },
+  }
+);
 
 export const Vendors = mongoose.model("vandors", vendorsSchema);
