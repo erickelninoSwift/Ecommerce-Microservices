@@ -55,7 +55,7 @@ const vendorsSchema = new mongoose.Schema<IVendorsDatabase>(
   },
   {
     toJSON: {
-      transform(doc, ret, options) {
+      transform(doc: any, ret: any, options: any) {
         delete ret.password,
           delete ret.salt,
           delete ret.createdAt,
